@@ -9,9 +9,7 @@ module Fluent
       HOST = 'localhost'
       PORT = 24224
 
-      def run(args)
-        tag = args.shift
-        cmd = args
+      def exec(tag, cmd)
         env = {}
         in_str  = ''
         out_str = ''
@@ -21,7 +19,9 @@ module Fluent
         sin, sout, serr, thr = Open3.popen3(env, *cmd)
 
         sin_t = Thread.new do
-          sin.write s while s = $stdin.read(1024)
+          while s = $stdin.read(1024)
+            sin.write s
+          end
           sin.close
         end
 
@@ -45,21 +45,28 @@ module Fluent
         sout_t.join
         serr_t.join
         es = status.exitstatus
+        {
+          :command => cmd,
+          :exitstatus => es,
+          :stdout => out_str,
+          :stderr => err_str,
+          :runtime => end_time - begin_time,
+        }
+      end
+
+      def run(args)
+        tag = args.shift
+        cmd = args
+        record = exec(tag, cmd)
         #コマンドの実行を優先？
         #fluentdサーバに接続できない場合はどうする？
         # failover (file|stdout)?
         begin
           log = Fluent::Logger::FluentLogger.new(nil, :host => HOST, :port => PORT)
-          log.post tag, {
-            :command => ARGV,
-            :exitstatus => es,
-            :stdout => out_str,
-            :stderr => err_str,
-            :runtime => end_time - begin_time,
-          }
+          log.post tag, record
         rescue => ex
         end
-        exit es
+        exit record[:exitstatus]
       end
     end
   end
