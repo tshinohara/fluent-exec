@@ -10,7 +10,17 @@ Install fluent-exec as a gem:
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ fluent-exec echo.test echo 'testing...'
+    testing...
+    $
+
+    {
+      "command": ["echo", "hoge"],
+      "exitstatus": 0,
+      "stdout": "hoge\n",
+      "stderr": "",
+      "runtime": 0.004784
+    }
 
 ## Contributing
 
