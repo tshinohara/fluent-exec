@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Fluent::Exec::VERSION
   gem.authors       = ["Takenari Shinohara"]
   gem.email         = ["takenari.shinohara@gmail.com"]
-  gem.description   = "Sends command's exit status, output and runtime to fluentd."
-  gem.summary       = "Sends command's exit status, output and runtime to fluentd."
+  gem.description   = "Log command's exit status, output and runtime to fluentd."
+  gem.summary       = "Log command's exit status, output and runtime to fluentd."
   gem.homepage      = "https://github.com/tshinohara/fluent-exec"
 
   gem.files         = `git ls-files`.split($/)

@@ -1,18 +1,10 @@
 # Fluent::Exec
 
-TODO: Write a gem description
+Log command's exit status, output and runtime to fluentd.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'fluent-exec'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install fluent-exec as a gem:
 
     $ gem install fluent-exec
 
