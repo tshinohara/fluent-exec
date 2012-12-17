@@ -17,6 +17,7 @@ module Fluent
         out_str = ''
         err_str = ''
 
+        begin_time = Time.now
         sin, sout, serr, thr = Open3.popen3(env, *cmd)
 
         sin_t = Thread.new do
@@ -39,6 +40,7 @@ module Fluent
         end
 
         status = thr.value
+        end_time = Time.now
         #sin_t.join
         sout_t.join
         serr_t.join
@@ -50,9 +52,10 @@ module Fluent
           log = Fluent::Logger::FluentLogger.new(nil, :host => HOST, :port => PORT)
           log.post tag, {
             :command => ARGV,
-            :'exit-status' => es,
+            :exitstatus => es,
             :stdout => out_str,
             :stderr => err_str,
+            :runtime => end_time - begin_time,
           }
         rescue => ex
         end
