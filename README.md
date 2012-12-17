@@ -16,9 +16,9 @@ Install fluent-exec as a gem:
 will log this record with tag `echo.test`:
 
     {
-      "command": ["echo", "hoge"],
+      "command": ["echo", "testing..."],
       "exitstatus": 0,
-      "stdout": "hoge\n",
+      "stdout": "testing...\n",
       "stderr": "",
       "runtime": 0.004784
     }
