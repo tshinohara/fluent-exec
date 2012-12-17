@@ -1,4 +1,4 @@
-# Fluent::Exec
+# Fluent-Exec
 
 Log command's exit status, output and runtime to fluentd.
 
@@ -12,7 +12,8 @@ Install fluent-exec as a gem:
 
     $ fluent-exec echo.test echo 'testing...'
     testing...
-    $
+
+will log this record with tag `echo.test`:
 
     {
       "command": ["echo", "hoge"],
