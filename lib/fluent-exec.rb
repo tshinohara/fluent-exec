@@ -38,6 +38,16 @@ module Fluent
           exit 1
         end
       end
+
+      def io_copy_thr(from, to, str=nil)
+        Thread.new do
+          while s = from.read(1024)
+            to.write s
+            str << s if str
+          end
+          to.close
+        end        
+      end
       
       def exec
         env = {}
@@ -48,26 +58,9 @@ module Fluent
         begin_time = Time.now
         sin, sout, serr, thr = Open3.popen3(env, *@cmd)
 
-        sin_t = Thread.new do
-          while s = $stdin.read(1024)
-            sin.write s
-          end
-          sin.close
-        end
-
-        sout_t = Thread.new do
-          while s = sout.read(1024)
-            out_str << s
-            $stdout.write s
-          end
-        end
-
-        serr_t = Thread.new do
-          while s = serr.read(1024)
-            err_str << s
-            $stderr.write s
-          end
-        end
+        sin_t = io_copy_thr $stdin, sin
+        sout_t = io_copy_thr sout, $stdout, out_str
+        serr_t = io_copy_thr serr, $stderr, err_str
 
         status = thr.value
         end_time = Time.now
@@ -87,9 +80,6 @@ module Fluent
       def run(args)
         parse! args
         record = exec
-        #コマンドの実行を優先？
-        #fluentdサーバに接続できない場合はどうする？
-        # failover (file|stdout)?
         begin
           log = Fluent::Logger::FluentLogger.new(nil, :host => @host, :port => @port)
           log.post @tag, record
