@@ -10,7 +10,7 @@ Install fluent-exec as a gem:
 
 ## Usage
 
-    $ fluent-exec echo.test echo 'testing...'
+    $ fluent-exec -t echo.test echo 'testing...'
     testing...
 
 will log this record with tag `echo.test`:
@@ -22,6 +22,14 @@ will log this record with tag `echo.test`:
       "stderr": "",
       "runtime": 0.004784
     }
+
+Lookup `fluent-exec --help` for more info.
+
+    Usage: fluent-exec [options] [--] command...
+    
+        -t, --tag TAG                    Tag to use (default fluent.exec)
+        -h, --host HOST                  Host to send (default localhost)
+        -p, --port PORT                  Port to send (default 24224)
 
 ## Contributing
 
