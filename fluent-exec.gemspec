@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = "Execute Command and log exit status, output and runtime to fluentd."
   gem.summary       = "Execute Command and log exit status, output and runtime to fluentd."
   gem.homepage      = "https://github.com/tshinohara/fluent-exec"
+  gem.required_ruby_version = "~>1.9.1"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
